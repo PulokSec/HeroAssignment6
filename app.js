@@ -1,8 +1,6 @@
 // new features
 // 1.Added Selected Image count
 // 2.Added spinner
-// 3.If input is empty or invalid show error Message
-// 4.If selected images less than 2 show error message
 
 
 const imagesArea = document.querySelector('.images');
@@ -50,7 +48,6 @@ const getImages = (query) => {
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty`)
     .then(response => response.json())
     .then(data => showImages(data))
-    .catch(error => errorHandler(error))
 }
 
 let slideIndex = 0;
@@ -70,13 +67,11 @@ const selectItem = (event, img) => {
 // create slider
 const createSlider = () => {
   search.value = '';
-  // galleryHeader.innerHTML = '';
   // check slider image length
   if (sliders.length < 2) {
     errorDetailsInfo.style.display = 'none';
     alert.classList.remove('d-none');
     toggleSpinner();
-    sliders = [];
     return;
   }
   // create slider previous next area
@@ -91,8 +86,9 @@ const createSlider = () => {
   // hide image aria
   imagesArea.style.display = 'none';
   let duration = document.getElementById('duration').value || 1000;
-  if (duration < 0 || !(duration > 1000)) {
-    duration = 1000;
+  if (duration < 0) {
+    const negative = Math.abs(duration);
+    duration = negative
   }
   sliders.forEach(slide => {
     let item = document.createElement('div')
@@ -142,15 +138,15 @@ search.addEventListener("keypress", function (event) {
 // search Images
 searchBtn.addEventListener('click', function () {
   document.querySelector('.main').style.display = 'none';
+  // document.getElementById('sliders').style.display = 'none';
   document.getElementById('count').innerText = '';
   clearInterval(timer);
-  if (search.value != '') {
-    errorDetailsInfo.style.display = 'none';
-    getImages(search.value)
-  } else {
-    
+  if (search.value == "") {
     errorHandler();
     toggleSpinner();
+  } else {
+    errorDetailsInfo.style.display = 'none';
+    getImages(search.value)
   }
   sliders.length = 0;
 })
