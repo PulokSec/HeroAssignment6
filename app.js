@@ -138,7 +138,6 @@ search.addEventListener("keypress", function (event) {
 // search Images
 searchBtn.addEventListener('click', function () {
   document.querySelector('.main').style.display = 'none';
-  // document.getElementById('sliders').style.display = 'none';
   document.getElementById('count').innerText = '';
   clearInterval(timer);
   if (search.value == "") {
